@@ -1,5 +1,5 @@
-<!DOCTYPE html>
-<html lang="es">
+<!DOCTYPE ahtml>
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -9,40 +9,40 @@
     <!-- Carga de Iconos (Lucide Icons) -->
     <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
     <style>
-        /* Configuración de la fuente global y colores personalizados */
+        /* Global Font and Custom Colors Configuration */
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap');
         body {
             font-family: 'Inter', sans-serif;
-            background-color: #000; /* Fondo oscuro para el contraste */
-            color: #E5E7EB; /* Texto gris claro */
-            padding-top: 64px; /* Espacio para la barra de navegación superior fija */
-            padding-bottom: 72px; /* Espacio para la barra de navegación inferior fija */
+            background-color: #000; /* Dark background for contrast */
+            color: #E5E7EB; /* Light gray text */
+            padding-top: 64px; /* Space for fixed top navigation bar */
+            padding-bottom: 72px; /* Space for fixed bottom navigation bar */
             scroll-behavior: smooth;
         }
 
-        /* Estilo para los botones principales, usando el color temático */
+        /* Style for main buttons, using the thematic color */
         .btn-primary {
-            background-color: #047857; /* Verde esmeralda */
+            background-color: #047857; /* Emerald green */
             color: white;
             transition: all 0.3s ease;
             box-shadow: 0 4px 6px rgba(4, 120, 87, 0.4);
         }
 
         .btn-primary:hover {
-            background-color: #059669; /* Verde más claro al pasar el ratón */
+            background-color: #059669; /* Lighter green on hover */
             transform: translateY(-2px);
         }
 
-        /* Clase para el texto grande con acento dorado */
+        /* Class for large text with a golden accent */
         .text-accent {
-            color: #FBBF24; /* Dorado/Ámbar */
+            color: #FBBF24; /* Gold/Amber */
         }
 
-        /* Estilo para el contenedor del mapa para asegurar que ocupe todo el ancho */
+        /* Style for map container to ensure full width occupation */
         .map-container {
             position: relative;
             width: 100%;
-            padding-bottom: 75%; /* Ratio 4:3 para el iframe */
+            padding-bottom: 75%; /* 4:3 ratio for the iframe */
             height: 0;
             overflow: hidden;
             border-radius: 12px;
@@ -55,7 +55,7 @@
             height: 100%;
         }
 
-        /* Estilo para el menú hamburguesa que se oculta en el móvil */
+        /* Style for mobile menu toggle */
         #mobile-menu {
             transition: max-height 0.3s ease-out, opacity 0.3s ease-out;
             max-height: 0;
@@ -63,192 +63,236 @@
             overflow: hidden;
         }
         #mobile-menu.open {
-            max-height: 300px; /* Suficiente para mostrar la lista */
+            max-height: 300px; /* Enough to display the list */
             opacity: 1;
+        }
+
+        /* Style for custom message box (alert replacement) */
+        #custom-message-box {
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 100;
+            background-color: #1F2937; /* Dark gray */
+            border: 2px solid #FBBF24;
+            padding: 24px;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.5);
+            max-width: 90%;
+            text-align: center;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #custom-message-box.active {
+            opacity: 1;
+            pointer-events: auto;
         }
     </style>
 </head>
 <body>
+    <!-- CUSTOM MESSAGE BOX (Alert Replacement) -->
+    <div id="custom-message-box" class="hidden">
+        <p id="custom-message-text" class="text-white text-lg font-medium mb-4"></p>
+        <button id="custom-message-close" class="btn-primary py-2 px-6 rounded-lg text-sm">Accept</button>
+    </div>
 
-    <!-- BARRA DE NAVEGACIÓN SUPERIOR (FIJA) -->
+    <!-- TOP NAVIGATION BAR (FIXED) -->
     <header class="fixed top-0 left-0 w-full bg-black/90 backdrop-blur-sm z-50 shadow-lg border-b border-gray-800">
         <div class="container mx-auto px-4 sm:px-6 lg:px-8 flex justify-between items-center h-16">
-            <!-- Nombre del Restaurante (Logo) -->
+            <!-- Restaurant Name (Logo) -->
             <a href="#inicio" class="text-2xl font-bold text-accent tracking-widest uppercase">Family Bar</a>
             
-            <!-- Botón de Menú Hamburguesa (visible en móvil) -->
+            <!-- Hamburger Menu Button (mobile visible) -->
             <button id="menu-toggle" class="sm:hidden p-2 text-white rounded-full hover:bg-gray-800 focus:outline-none">
                 <svg id="icon-menu" class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path></svg>
                 <svg id="icon-close" class="w-6 h-6 hidden" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path></svg>
             </button>
 
-            <!-- Menú de Navegación (visible en escritorio) -->
+            <!-- Navigation Menu (desktop visible) -->
             <nav class="hidden sm:flex space-x-6 text-sm font-medium">
-                <a href="#especiales" class="text-white hover:text-accent transition duration-150">Especiales</a>
-                <a href="#reservaciones" class="text-white hover:text-accent transition duration-150">Reservaciones</a>
-                <a href="#ubicacion" class="text-white hover:text-accent transition duration-150">Ubicación</a>
-                <a href="#sobre-nosotros" class="text-white hover:text-accent transition duration-150">Sobre Nosotros</a>
+                <a href="#especiales" class="text-white hover:text-accent transition duration-150">Specials</a>
+                <a href="#reservaciones" class="text-white hover:text-accent transition duration-150">Reservations</a>
+                <a href="#ubicacion" class="text-white hover:text-accent transition duration-150">Location</a>
+                <a href="#sobre-nosotros" class="text-white hover:text-accent transition duration-150">About Us</a>
             </nav>
         </div>
 
-        <!-- Menú Móvil Desplegable -->
+        <!-- Mobile Dropdown Menu -->
         <nav id="mobile-menu" class="sm:hidden bg-black/90 border-t border-gray-800">
-            <a href="#especiales" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Especiales</a>
-            <a href="#reservaciones" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Reservaciones</a>
-            <a href="#ubicacion" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Ubicación</a>
-            <a href="#sobre-nosotros" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Sobre Nosotros</a>
+            <a href="#especiales" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Specials</a>
+            <a href="#reservaciones" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Reservations</a>
+            <a href="#ubicacion" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">Location</a>
+            <a href="#sobre-nosotros" class="block py-3 px-4 text-white hover:bg-gray-800" onclick="document.getElementById('menu-toggle').click()">About Us</a>
         </nav>
     </header>
 
-    <!-- CONTENIDO PRINCIPAL -->
-    <main class="container mx-auto px-4 sm:px-6 lg:px-8 py-8">
+    <!-- MAIN CONTENT -->
+    <main class="py-8">
 
-        <!-- 1. SECCIÓN INICIO -->
-        <section id="inicio" class="relative w-full h-[80vh] min-h-[500px] flex items-center justify-center rounded-xl overflow-hidden shadow-2xl mb-16">
-            <!-- Foto del Restaurante (Placeholder con estilo africano) -->
+        <!-- 1. HOME SECTION (Modificado para ir de borde a borde) -->
+        <!-- Se han quitado las clases 'container mx-auto px-...' y 'rounded-xl overflow-hidden' -->
+        <section id="inicio" class="relative w-full h-[80vh] min-h-[500px] flex items-center justify-center shadow-2xl mb-16">
+            <!-- Restaurant Photo (African style placeholder) -->
             <div class="absolute inset-0 bg-cover bg-center" 
                  style="background-image: url('https://placehold.co/1200x800/2A3B3C/FBBF24?text='); background-blend-mode: multiply; background-color: rgba(0, 0, 0, 0.4);">
             </div>
-            <!-- Texto de Superposición -->
-            <div class="relative z-10 text-center p-6 bg-black/50 rounded-lg max-w-2xl mx-auto">
+            <!-- Overlay Text (Añadido padding para que el texto no toque los bordes en móviles) -->
+            <div class="relative z-10 text-center p-6 bg-black/50 rounded-lg max-w-2xl mx-auto px-4 sm:px-6 lg:px-8">
                 <h1 class="text-5xl md:text-7xl font-extrabold text-accent leading-tight drop-shadow-lg">
                     FAMILY BAR & RESTAURANT
                 </h1>
                 <p class="mt-4 text-xl md:text-2xl text-white font-medium italic">
-                    Un Sabor de Addis Abeba y Asmara en Guelph.
+                    A Taste of Addis Ababa and Asmara in Guelph.
                 </p>
             </div>
         </section>
 
-        <!-- 5. SECCIÓN SOBRE NOSOTROS (Movida aquí para seguir el flujo de un sitio web de presentación) -->
-        <section id="sobre-nosotros" class="py-12 md:py-16 text-center">
-            <h2 class="text-4xl font-bold text-white mb-6 border-b-4 border-accent inline-block pb-2">Nuestra Historia</h2>
-            <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed">
-                ¡Bienvenido a Family Bar & Restaurant! Aquí, la comida no es solo una necesidad, es una **celebración comunitaria**. Te invitamos a sumergirte en los auténticos y vibrantes sabores de la cocina eritrea y etíope. Desde el icónico y esponjoso <span class="text-accent font-semibold">Injera</span>, que sirve de base para nuestros guisos ricos y aromáticos (<span class="text-accent font-semibold">Wat</span>), hasta las especias intensas y únicas. Cada plato está preparado con amor y pasión, prometiendo una experiencia divertida y memorable que deleitará tus sentidos y te hará sentir como en casa. ¡Prepárate para la mejor comida que jamás compartirás!
-            </p>
+        <!-- El resto de las secciones mantienen sus contenedores para la centralización -->
+        <!-- 5. ABOUT US SECTION (Image is now standalone, text is below) -->
+        <section id="sobre-nosotros" class="py-12 md:py-16 text-center overflow-hidden">
+            <!-- Text Container (Still centered with the rest of the content) -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="text-4xl font-bold text-white mb-6 border-b-4 border-accent inline-block pb-2">Our Story</h2>
+                <p class="text-lg md:text-xl text-gray-300 max-w-4xl mx-auto leading-relaxed mb-10">
+                    Welcome to Family Bar & Restaurant! Here, food is not just a necessity, it's a **communal celebration**. We invite you to dive into the authentic and vibrant flavors of Eritrean and Ethiopian cuisine. From the iconic, spongy <span class="text-accent font-semibold">Injera</span>, which serves as the base for our rich and aromatic stews (<span class="text-accent font-semibold">Wat</span>), to the unique and intense spices. Every dish is prepared with love and passion, promising a fun and memorable experience that will delight your senses and make you feel right at home. Get ready for the best food you'll ever share!
+                </p>
+            </div>
+
+            <!-- Edge-to-Edge Image (No overlay content) -->
+            <div class="relative w-screen h-96 mt-10">
+                <img 
+                    src="https://placehold.co/1000x500/047857/FBBF24?text=Shared+Plate" 
+                    alt="An Injera topped with various Wat (stews), ready to be shared." 
+                    class="w-full h-full object-cover"
+                >
+            </div>
+            
+            <!-- Removed Overlay Content - Adding the text below the image in a new centered container -->
+            <div class="container mx-auto px-4 sm:px-6 lg:px-8 pt-8 text-left bg-gray-900 md:bg-transparent">
+                <h3 class="text-5xl md:text-6xl font-extrabold text-white leading-tight">
+                    FOOD IS A<br>CELEBRATION
+                </h3>
+                <p class="mt-3 text-xl font-light text-gray-200 max-w-lg">
+                    Every dish tells a story of our Ethiopian and Eritrean heritage, served with vibrant spices and family warmth.
+                </p>
+            </div>
+
         </section>
 
-        <!-- 2. SECCIÓN ESPECIALES -->
-        <section id="especiales" class="py-12 md:py-16">
-            <h2 class="text-4xl font-bold text-center text-white mb-10 border-b-4 border-accent inline-block pb-2 mx-auto block">Especiales de la Casa</h2>
+        <!-- 2. SPECIALS SECTION -->
+        <section id="especiales" class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <h2 class="text-4xl font-bold text-center text-white mb-10 border-b-4 border-accent inline-block pb-2 mx-auto block">House Specials</h2>
             
             <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                 
-                <!-- Especial 1: Doro Wat -->
+                <!-- Special 1: Doro Wat -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
-                    <img src="https://placehold.co/600x400/388E3C/FBBF24?text=" alt="Doro Wat (Estofado de pollo etíope)" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/388E3C/FBBF24?text=Doro+Wat" alt="Doro Wat (Ethiopian chicken stew)" class="w-full h-48 object-cover">
                     <div class="p-5">
                         <h3 class="text-2xl font-semibold text-accent mb-2">Doro Wat</h3>
-                        <p class="text-gray-400 text-sm">El estofado de pollo más famoso, cocinado lentamente en una salsa de berbere (mezcla de especias) con huevo duro. Rico y picante.</p>
+                        <p class="text-gray-400 text-sm">The most famous chicken stew, slow-cooked in a berbere (spice blend) sauce with a hard-boiled egg. Rich and spicy.</p>
                     </div>
                 </div>
 
-                <!-- Especial 2: Tibsi de Res -->
+                <!-- Special 2: Beef Tibsi -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
-                    <img src="https://placehold.co/600x400/4CAF50/FBBF24?text=" alt="Tibsi de Res (Carne de res salteada)" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/4CAF50/FBBF24?text=Beef+Tibsi" alt="Beef Tibsi (Sautéed beef)" class="w-full h-48 object-cover">
                     <div class="p-5">
-                        <h3 class="text-2xl font-semibold text-accent mb-2">Tibsi de Res</h3>
-                        <p class="text-gray-400 text-sm">Tiras de carne de res marinada y salteada a fuego alto con cebollas, pimientos y el sabor inconfundible del Awaze.</p>
+                        <h3 class="text-2xl font-semibold text-accent mb-2">Beef Tibsi</h3>
+                        <p class="text-gray-400 text-sm">Strips of marinated beef sautéed over high heat with onions, peppers, and the unmistakable flavor of Awaze.</p>
                     </div>
                 </div>
 
-                <!-- Especial 3: Alicha Segga Wat -->
+                <!-- Special 3: Alicha Segga Wat -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
-                    <img src="https://placehold.co/600x400/66BB6A/FBBF24?text=" alt="Alicha Segga Wat (Estofado suave de cordero)" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/66BB6A/FBBF24?text=Alicha+Segga" alt="Alicha Segga Wat (Mild lamb stew)" class="w-full h-48 object-cover">
                     <div class="p-5">
                         <h3 class="text-2xl font-semibold text-accent mb-2">Alicha Segga Wat</h3>
-                        <p class="text-gray-400 text-sm">Un estofado de cordero sabroso pero no picante, con cúrcuma y jengibre. Perfecto para degustar la Injera.</p>
+                        <p class="text-gray-400 text-sm">A flavorful but non-spicy lamb stew with turmeric and ginger. Perfect for tasting Injera.</p>
                     </div>
                 </div>
 
-                <!-- Especial 4: Plato Vegetariano (Beyeaynetu) -->
+                <!-- Special 4: Vegetarian Platter (Beyeaynetu) -->
                 <div class="bg-gray-900 rounded-xl overflow-hidden shadow-xl transform hover:scale-[1.02] transition duration-300">
-                    <img src="https://placehold.co/600x400/9CCC65/FBBF24?text=" alt="Beyeaynetu (Plato de verduras y legumbres)" class="w-full h-48 object-cover">
+                    <img src="https://placehold.co/600x400/9CCC65/FBBF24?text=Beyeaynetu" alt="Beyeaynetu (Vegetable and legume platter)" class="w-full h-48 object-cover">
                     <div class="p-5">
                         <h3 class="text-2xl font-semibold text-accent mb-2">Beyeaynetu</h3>
-                        <p class="text-gray-400 text-sm">El festival vegetariano: una selección de estofados de lentejas, garbanzos y verduras variadas servidas sobre Injera.</p>
+                        <p class="text-gray-400 text-sm">The vegetarian festival: a selection of lentil, chickpea, and various vegetable stews served on Injera.</p>
                     </div>
                 </div>
             </div>
         </section>
 
-        <!-- 3. SECCIÓN RESERVACIONES -->
-        <section id="reservaciones" class="py-12 md:py-16">
-            <h2 class="text-4xl font-bold text-center text-white mb-10 border-b-4 border-accent inline-block pb-2 mx-auto block">Reserva tu Mesa</h2>
+        <!-- 3. RESERVATIONS SECTION -->
+        <section id="reservaciones" class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <h2 class="text-4xl font-bold text-center text-white mb-10 border-b-4 border-accent inline-block pb-2 mx-auto block">Book Your Table</h2>
             
             <div class="max-w-xl mx-auto bg-gray-900 p-8 rounded-xl shadow-2xl border border-gray-800">
                 <div id="reservation-message" class="text-center text-white mb-4 hidden font-medium"></div>
                 
                 <!-- 
-                    NOTA IMPORTANTE: 
-                    Para que esta reservación sea REAL, debes registrarte en un servicio como Formspree (Formulario de ejemplo: https://formspree.io/f/youremailid) 
-                    o similar, y reemplazar la URL de acción del formulario a continuación.
-                    Estos servicios envían el correo electrónico al propietario y pueden configurarse para enviar una copia al cliente.
-                    EL SCRIPT JS ABAJO HA SIDO REMOVIDO PARA PERMITIR QUE EL NAVEGADOR MANEJE EL ENVÍO.
+                    FORM ACTION CONFIGURATION: The form is pointed to the Formspree URL.
                 -->
-                <form id="reservation-form" action="TU_ENDPOINT_AQUÍ" method="POST" target="_blank"> 
-                    <!-- Campo oculto para reenviar la confirmación al cliente. (Depende del servicio de Formulario) -->
-                    <!-- <input type="hidden" name="_replyto" value="EMAIL_DEL_CLIENTE_AQUI"> -->
+                <form id="reservation-form" action="https://formspree.io/f/xwpwajpo" method="POST" target="_blank"> 
                     
-                    <div class="text-sm font-medium text-red-500 mb-4">
-                        *Aviso: Este formulario requiere un servicio de backend (ej. Formspree) para enviar el correo. Por favor, reemplace "TU_ENDPOINT_AQUÍ" en el código con la URL del servicio.
+                    <!-- Name -->
+                    <div class="mb-4">
+                        <label for="name" class="block text-sm font-medium text-gray-300">Full Name</label>
+                        <input type="text" id="name" name="Name" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" placeholder="Ex. John Smith">
                     </div>
                     
-                    <!-- Nombre -->
+                    <!-- Email (Needed for client confirmation) -->
                     <div class="mb-4">
-                        <label for="name" class="block text-sm font-medium text-gray-300">Nombre Completo</label>
-                        <input type="text" id="name" name="Nombre" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" placeholder="Ej. Juan Pérez">
-                    </div>
-                    
-                    <!-- **NUEVO CAMPO: Correo Electrónico (Necesario para la confirmación al cliente)** -->
-                    <div class="mb-4">
-                        <label for="email" class="block text-sm font-medium text-gray-300">Correo Electrónico (Para confirmación)</label>
-                        <input type="email" id="email" name="Correo" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" placeholder="ejemplo@correo.com">
-                        <!-- Campo oculto para el reply-to. Requiere que el servicio de formulario soporte '_replyto' o similar. -->
+                        <label for="email" class="block text-sm font-medium text-gray-300">Email Address (For confirmation)</label>
+                        <input type="email" id="email" name="Email" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" placeholder="example@email.com">
+                        
+                        <!-- Hidden field: Formspree uses this '_replyto' field to send a copy of the confirmation to the client. -->
                         <input type="hidden" name="_replyto" id="replyto">
                     </div>
 
-                    <!-- Número de Personas -->
+                    <!-- Number of Guests -->
                     <div class="mb-4">
-                        <label for="guests" class="block text-sm font-medium text-gray-300">Número de Personas</label>
-                        <input type="number" id="guests" name="Personas" min="1" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" value="2">
+                        <label for="guests" class="block text-sm font-medium text-gray-300">Number of Guests</label>
+                        <input type="number" id="guests" name="Guests" min="1" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" value="2">
                     </div>
 
-                    <!-- Teléfono -->
+                    <!-- Phone -->
                     <div class="mb-4">
-                        <label for="phone" class="block text-sm font-medium text-gray-300">Teléfono</label>
-                        <input type="tel" id="phone" name="Telefono" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" placeholder="Ej. 226-979-6072">
+                        <label for="phone" class="block text-sm font-medium text-gray-300">Phone Number</label>
+                        <input type="tel" id="phone" name="Phone" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3" placeholder="Ex. 226-979-6072">
                     </div>
 
-                    <!-- Día y Hora -->
+                    <!-- Date and Time -->
                     <div class="grid grid-cols-2 gap-4 mb-6">
                         <div>
-                            <label for="date" class="block text-sm font-medium text-gray-300">Día</label>
-                            <input type="date" id="date" name="Dia" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3">
+                            <label for="date" class="block text-sm font-medium text-gray-300">Date</label>
+                            <input type="date" id="date" name="Date" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3">
                         </div>
                         <div>
-                            <label for="time" class="block text-sm font-medium text-gray-300">Hora</label>
-                            <input type="time" id="time" name="Hora" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3">
+                            <label for="time" class="block text-sm font-medium text-gray-300">Time</label>
+                            <input type="time" id="time" name="Time" required class="mt-1 block w-full rounded-md bg-gray-800 border-gray-700 text-white shadow-sm focus:border-accent focus:ring-accent p-3">
                         </div>
                     </div>
 
                     <button type="submit" class="btn-primary w-full py-3 rounded-lg text-lg font-semibold uppercase tracking-wider">
-                        Confirmar Reserva
+                        Confirm Reservation
                     </button>
                 </form>
             </div>
         </section>
 
-        <!-- 4. SECCIÓN HORARIO Y UBICACIÓN -->
-        <section id="ubicacion" class="py-12 md:py-16">
-            <h2 class="text-4xl font-bold text-center text-white mb-10 border-b-4 border-accent inline-block pb-2 mx-auto block">Horario y Ubicación</h2>
+        <!-- 4. HOURS AND LOCATION SECTION -->
+        <section id="ubicacion" class="container mx-auto px-4 sm:px-6 lg:px-8 py-12 md:py-16">
+            <h2 class="text-4xl font-bold text-center text-white mb-10 border-b-4 border-accent inline-block pb-2 mx-auto block">Hours and Location</h2>
             
             <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-stretch">
-                <!-- Mapa Interactivo -->
+                <!-- Interactive Map -->
                 <div>
-                    <h3 class="text-2xl font-semibold text-white mb-4">Encuéntranos Aquí:</h3>
+                    <h3 class="text-2xl font-semibold text-white mb-4">Find Us Here:</h3>
                     <div class="map-container">
-                        <!-- Google Maps para 281 Woodlawn Rd W, Guelph, ON N1H 7K7, Canadá -->
+                        <!-- Google Maps for 281 Woodlawn Rd W, Guelph, ON N1H 7K7, Canadá -->
                         <iframe 
                             src="https://maps.google.com/maps?width=100%25&amp;height=600&amp;hl=en&amp;q=281%20Woodlawn%20Rd%20W,%20Guelph,%20ON%20N1H%207K7,%20Canad%C3%A1&amp;t=&amp;z=14&amp;ie=UTF8&amp;iwloc=B&amp;output=embed" 
                             width="100%" 
@@ -259,19 +303,19 @@
                             referrerpolicy="no-referrer-when-downgrade">
                         </iframe>
                     </div>
-                    <p class="mt-3 text-lg text-gray-300 font-medium">281 Woodlawn Rd W, Guelph, ON N1H 7K7, Canadá</p>
+                    <p class="mt-3 text-lg text-gray-300 font-medium">281 Woodlawn Rd W, Guelph, ON N1H 7K7, Canada</p>
                 </div>
 
-                <!-- Recuadro de Horario -->
+                <!-- Hours Box -->
                 <div class="bg-gray-900 p-8 rounded-xl shadow-2xl flex flex-col justify-center border border-gray-800">
-                    <h3 class="text-2xl font-semibold text-white mb-4 border-b border-accent pb-2">Horario de Apertura</h3>
+                    <h3 class="text-2xl font-semibold text-white mb-4 border-b border-accent pb-2">Opening Hours</h3>
                     <div class="space-y-3 text-lg">
                         <p class="flex justify-between items-center">
-                            <span class="font-medium text-gray-300">Lunes a Jueves:</span>
+                            <span class="font-medium text-gray-300">Monday to Thursday:</span>
                             <span class="text-accent font-bold">11:30 am - 12:00 am</span>
                         </p>
                         <p class="flex justify-between items-center">
-                            <span class="font-medium text-gray-300">Viernes a Domingo:</span>
+                            <span class="font-medium text-gray-300">Friday to Sunday:</span>
                             <span class="text-accent font-bold">11:30 am - 3:00 am</span>
                         </p>
                     </div>
@@ -281,40 +325,63 @@
 
     </main>
 
-    <!-- BARRA DE NAVEGACIÓN INFERIOR (FIJA y Mobile-First) -->
+    <!-- BOTTOM NAVIGATION BAR (FIXED and Mobile-First) -->
     <footer class="fixed bottom-0 left-0 w-full bg-black/90 backdrop-blur-sm z-50 shadow-t-xl border-t border-gray-800">
         <div class="h-18 grid grid-cols-3 max-w-xl mx-auto">
             
-            <!-- Botón 1: Llamar -->
+            <!-- Button 1: Call -->
             <a href="tel:+12269796072" class="flex flex-col items-center justify-center p-2 text-white hover:bg-gray-800 transition duration-150">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-accent"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.08 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/></svg>
-                <span class="text-xs mt-1">Llamar</span>
+                <span class="text-xs mt-1">Call</span>
             </a>
 
-            <!-- Botón 2: Menú (Link simbólico/Placeholder) -->
-            <a href="#" class="flex flex-col items-center justify-center p-2 text-white hover:bg-gray-800 transition duration-150" onclick="alert('Funcionalidad de Menú: Aquí se cargaría un archivo PDF o una página dedicada al menú completo.')">
+            <!-- Button 2: Menu (Now links to the menu site) -->
+            <a href="https://carlosalbertojimenez834-dotcom.github.io/menu-family-bar-and-restaurant/" target="_blank" class="flex flex-col items-center justify-center p-2 text-white hover:bg-gray-800 transition duration-150">
                  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-accent"><path d="M14.5 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V7.5L14.5 2z"/><polyline points="14 2 14 8 20 8"/><line x1="16" x2="8" y1="13" y2="13"/><line x1="16" x2="8" y1="17" y2="17"/><line x1="10" x2="8" y1="9" y2="9"/></svg>
-                <span class="text-xs mt-1">Menú</span>
+                <span class="text-xs mt-1">Menu</span>
             </a>
 
-            <!-- Botón 3: Reservar -->
+            <!-- Button 3: Reserve -->
             <a href="#reservaciones" class="flex flex-col items-center justify-center p-2 text-white hover:bg-gray-800 transition duration-150">
                 <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="w-6 h-6 text-accent"><path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/><path d="M17 14h-6"/><path d="M13 18h-2"/></svg>
-                <span class="text-xs mt-1">Reservar</span>
+                <span class="text-xs mt-1">Reserve</span>
             </a>
         </div>
     </footer>
 
     <script>
-        // JavaScript para el menú hamburguesa
+        // JavaScript for the hamburger menu
         const menuToggle = document.getElementById('menu-toggle');
         const mobileMenu = document.getElementById('mobile-menu');
         const iconMenu = document.getElementById('icon-menu');
         const iconClose = document.getElementById('icon-close');
-        const reservationForm = document.getElementById('reservation-form');
-        const replytoField = document.getElementById('replyto');
+        
+        // Form fields
         const emailField = document.getElementById('email');
+        const replytoField = document.getElementById('replyto');
+        
+        // Custom message box elements
+        const messageBox = document.getElementById('custom-message-box');
+        const messageText = document.getElementById('custom-message-text');
+        const messageCloseBtn = document.getElementById('custom-message-close');
 
+        // Function to show the custom message (Alert replacement)
+        function showMessageBox(message) {
+            messageText.textContent = message;
+            messageBox.classList.add('active');
+            messageBox.classList.remove('hidden');
+        }
+
+        // Listener to close the message
+        messageCloseBtn.addEventListener('click', () => {
+            messageBox.classList.remove('active');
+            // Delay for opacity transition
+            setTimeout(() => {
+                messageBox.classList.add('hidden');
+            }, 300); 
+        });
+
+        // Mobile menu toggle
         menuToggle.addEventListener('click', () => {
             const isOpen = mobileMenu.classList.toggle('open');
             if (isOpen) {
@@ -326,13 +393,12 @@
             }
         });
 
-        // Este script escucha el cambio en el campo de correo y lo copia al campo oculto de respuesta (si el servicio lo soporta)
+        // CLIENT EMAIL LOGIC: 
+        // This script listens for changes in the email field and copies it to the hidden reply-to field.
+        // Formspree uses this '_replyto' field to know where to send a copy of the confirmation to the client.
         emailField.addEventListener('input', () => {
              replytoField.value = emailField.value;
         });
-
-        // Se ha removido la función handleReservation() para permitir que el formulario sea manejado por el navegador
-        // y el servicio de backend (Formspree, etc.) que se configure en el atributo 'action'.
 
     </script>
 </body>
